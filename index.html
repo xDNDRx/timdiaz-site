@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tim Diaz</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', 'Helvetica Neue', sans-serif;
+            background: #fff;
+            color: #000;
+            overflow-x: hidden;
+            cursor: default;
+        }
+        
+        /* Typography approximation */
+        h1, .nav-link {
+            font-weight: 200;
+            letter-spacing: 0.08em;
+        }
+        
+        p, .description {
+            font-weight: 300;
+            letter-spacing: -0.01em;
+            line-height: 1.6;
+        }
+        
+        /* Splash Page */
+        #splash {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        #splash.hidden {
+            opacity: 0;
+            pointer-events: none;
+            position: absolute;
+        }
+        
+        .nav-container {
+            display: flex;
+            gap: 120px;
+        }
+        
+        .nav-link {
+            font-size: 28px;
+            text-decoration: none;
+            color: #000;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #000;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        /* Pages Container */
+        .page {
+            min-height: 100vh;
+            padding: 60px;
+            display: none;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Back Button */
+        .back-btn {
+            position: fixed;
+            top: 40px;
+            left: 40px;
+            font-size: 18px;
+            text-decoration: none;
+            color: #000;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            transform: translateX(-5px);
+        }
+        
+        /* Client Work Page */
+        #client-work {
+            padding: 100px 60px;
+        }
+        
+        #client-work h1 {
+            font-size: 72px;
+            margin-bottom: 80px;
+            margin-left: 10%;
+        }
+        
+        .work-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 60px;
+            margin-left: 15%;
+            margin-right: 10%;
+        }
+        
+        .work-item {
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .work-item:nth-child(even) {
+            margin-top: 40px;
+        }
+        
+        .work-item:hover {
+            transform: scale(1.02);
+        }
+        
+        .work-item img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: filter 0.4s ease;
+        }
+        
+        .work-item:hover img {
+            filter: grayscale(0%);
+        }
+        
+        .work-description {
+            margin-top: 20px;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        
+        .work-title {
+            font-weight: 400;
+            margin-bottom: 8px;
+        }
+        
+        /* Services Page */
+        #services {
+            padding: 100px 60px;
+            display: flex;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .services-content {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 80px;
+            max-width: 1400px;
+            margin: 0 auto;
+            align-items: center;
+        }
+        
+        .profile-section {
+            position: relative;
+        }
+        
+        .profile-img {
+            width: 100%;
+            max-width: 400px;
+            height: 500px;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: filter 0.6s ease;
+        }
+        
+        .profile-img:hover {
+            filter: grayscale(0%);
+        }
+        
+        .services-text {
+            padding-left: 40px;
+        }
+        
+        .services-text h1 {
+            font-size: 56px;
+            margin-bottom: 40px;
+        }
+        
+        .services-description {
+            font-size: 18px;
+            line-height: 1.8;
+            max-width: 600px;
+        }
+        
+        /* Contact Page */
+        #contact {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 60px;
+        }
+        
+        .contact-content {
+            text-align: center;
+        }
+        
+        .contact-content h1 {
+            font-size: 64px;
+            margin-bottom: 60px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 60px;
+            justify-content: center;
+        }
+        
+        .social-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #000;
+            transition: transform 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            transform: translateY(-5px) rotate(-5deg);
+        }
+        
+        .social-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 40px;
+                text-align: center;
+            }
+            
+            .work-grid {
+                grid-template-columns: 1fr;
+                margin: 0;
+            }
+            
+            .services-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .services-text {
+                padding-left: 0;
+            }
+            
+            .page {
+                padding: 40px 20px;
+            }
+            
+            #client-work h1,
+            .services-text h1,
+            .contact-content h1 {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Splash Page -->
+    <div id="splash">
+        <nav class="nav-container">
+            <a href="#" class="nav-link" onclick="showPage('client-work')">client work</a>
+            <a href="#" class="nav-link" onclick="showPage('services')">services</a>
+            <a href="#" class="nav-link" onclick="showPage('contact')">contact</a>
+        </nav>
+    </div>
+    
+    <!-- Back Button -->
+    <a href="#" class="back-btn" onclick="showSplash()" style="display: none;">← back</a>
+    
+    <!-- Client Work Page -->
+    <div id="client-work" class="page">
+        <h1>client work</h1>
+        <div class="work-grid">
+            <!-- Sample work items - replace with actual content -->
+            <div class="work-item" onclick="window.open('https://example.com', '_blank')">
+                <img src="https://via.placeholder.com/600x400/000000/FFFFFF?text=Project+1" alt="Project 1">
+                <div class="work-description">
+                    <div class="work-title">Project Title</div>
+                    <p>A compelling audio-visual experience crafted with precision and creativity. This project showcases the seamless blend of sound design and visual aesthetics.</p>
+                </div>
+            </div>
+            
+            <div class="work-item" onclick="window.open('https://example.com', '_blank')">
+                <img src="https://via.placeholder.com/600x400/333333/FFFFFF?text=Project+2" alt="Project 2">
+                <div class="work-description">
+                    <div class="work-title">Campaign Sound Design</div>
+                    <p>Full audio production for a multimedia campaign, featuring original composition and detailed sound design work.</p>
+                </div>
+            </div>
+            
+            <div class="work-item" onclick="window.open('https://example.com', '_blank')">
+                <img src="https://via.placeholder.com/600x400/666666/FFFFFF?text=Project+3" alt="Project 3">
+                <div class="work-description">
+                    <div class="work-title">Podcast Series</div>
+                    <p>End-to-end podcast production including recording, editing, mixing, and mastering for optimal listening experience.</p>
+                </div>
+            </div>
+            
+            <!-- Add more work items as needed -->
+        </div>
+    </div>
+    
+    <!-- Services Page -->
+    <div id="services" class="page">
+        <div class="services-content">
+            <div class="profile-section">
+                <img src="https://via.placeholder.com/400x500/000000/FFFFFF?text=Your+Photo" alt="Tim Diaz" class="profile-img">
+            </div>
+            <div class="services-text">
+                <h1>services</h1>
+                <p class="services-description">
+                    As a vetted audio engineer and visual designer, my services will provide great value to your needs through end-to-end clarity and clear communication on your needs. From short-form videos to long-form podcasts, there is a perfect blend of professionalism and authenticity in my workflow that reflects in our finished product. Additional services include music composition and sound design for any projects that need a boost of life. Proficiency in Adobe Suite and FL Studio.
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Contact Page -->
+    <div id="contact" class="page">
+        <div class="contact-content">
+            <h1>contact</h1>
+            <div class="social-links">
+                <a href="https://instagram.com/timdiaz" target="_blank" class="social-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                </a>
+                <a href="https://x.com/timdiazz" target="_blank" class="social-icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const splash = document.getElementById('splash');
+        const backBtn = document.querySelector('.back-btn');
+        const pages = document.querySelectorAll('.page');
+        
+        function showPage(pageId) {
+            splash.classList.add('hidden');
+            backBtn.style.display = 'block';
+            
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            document.getElementById(pageId).classList.add('active');
+        }
+        
+        function showSplash() {
+            splash.classList.remove('hidden');
+            backBtn.style.display = 'none';
+            
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+        }
+        
+        // Add smooth scroll behavior
+        document.querySelectorAll('a[href="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+            });
+        });
+        
+        // Add subtle parallax effect on mouse move
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            document.querySelectorAll('.work-item').forEach((item, index) => {
+                const speed = 0.5 + (index * 0.1);
+                item.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
